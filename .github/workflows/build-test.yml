@@ -14,15 +14,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Append Test Cases to main.c
+      - name: Modify main.c to Include Test Cases
         run: |
-          echo '#include <stdio.h>' > temp_main.c
-          cat main.c >> temp_main.c
+          # Extract everything before `main()`
+          awk '/int main\(\)/ {exit} {print}' main.c > temp_main.c
 
-          # Append test cases
+          # Insert test case function
           echo '' >> temp_main.c
           echo 'void runTestCases() {' >> temp_main.c
-
           echo '    int arr1[] = {2, 1, 4, 7, 3, 2, 5};' >> temp_main.c
           echo '    printf("Test 1: Expected 5, Got %d\\n", longestMountain(arr1, 7));' >> temp_main.c
 
@@ -37,15 +36,14 @@ jobs:
 
           echo '    int arr5[] = {1, 2, 3, 2, 1};' >> temp_main.c
           echo '    printf("Test 5: Expected 5, Got %d\\n", longestMountain(arr5, 5));' >> temp_main.c
-
           echo '}' >> temp_main.c
 
-          # Modify main function to call runTestCases
-          echo '' >> temp_main.c
-          echo 'int main() {' >> temp_main.c
+          # Extract the existing `main()` function without its last `}`
+          awk '/int main\(\)/ {flag=1; next} flag {if ($0 != "}") print}' main.c >> temp_main.c
+
+          # Add test case execution inside main()
           echo '    runTestCases();' >> temp_main.c
-          echo '    return 0;' >> temp_main.c
-          echo '}' >> temp_main.c
+          echo '}' >> temp_main.c  # Closing bracket for main()
 
           mv temp_main.c main.c
           cat main.c  # Debug: Show final main.c
