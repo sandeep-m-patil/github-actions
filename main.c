@@ -1,41 +1,25 @@
 #include <stdio.h>
 
-
-// Function to find the longest mountain
-int longestMountain(int* arr, int arrSize) {
-    if (arrSize < 3) return 0;
-
-    int longest = 0;
-
-    for (int i = 1; i < arrSize - 1; i++) {
-        // Check if arr[i] is a peak
-        if (arr[i - 1] < arr[i] && arr[i] > arr[i + 1]) {
+int longestMountain(int* arr, int size) {
+    if (size < 3) return 0;
+    
+    int maxLen = 0;
+    for (int i = 1; i < size - 1; i++) {
+        if (arr[i - 1] < arr[i] && arr[i] > arr[i + 1]) { // Peak found
             int left = i - 1;
+            while (left > 0 && arr[left - 1] < arr[left]) left--; // Expand left
+
             int right = i + 1;
+            while (right < size - 1 && arr[right] > arr[right + 1]) right++; // Expand right
 
-            // Expand to the left
-            while (left > 0 && arr[left - 1] < arr[left]) {
-                left--;
-            }
-
-            // Expand to the right
-            while (right < arrSize - 1 && arr[right] > arr[right + 1]) {
-                right++;
-            }
-
-            // Only count valid mountain if length >= 3
             int length = right - left + 1;
-            if (length >= 3 && length > longest) {
-                longest = length;
-            }
+            if (length > maxLen) maxLen = length;
         }
     }
-
-    return longest;
+    return maxLen;
 }
 
-// Main function (Empty, test cases will be appended dynamically)
 int main() {
-    
+    printf("Program Executed Successfully.\n");
     return 0;
 }
