@@ -13,8 +13,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Append Test Cases to main.c
+      - name: Append Test Cases & main() to main.c
         run: |
+          echo '' >> main.c
           echo 'void runTestCases() {' >> main.c
           echo '    int arr1[] = {2, 1, 4, 7, 3, 2, 5};' >> main.c
           echo '    int arr2[] = {2, 2, 2};' >> main.c

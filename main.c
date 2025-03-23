@@ -19,7 +19,4 @@ int longestMountain(int* arr, int size) {
     return maxLen;
 }
 
-int main() {
-    printf("Program Executed Successfully.\n");
-    return 0;
-}
+// No main() here; GitHub Actions will append it dynamically.
