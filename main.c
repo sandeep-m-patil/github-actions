@@ -35,5 +35,6 @@ int longestMountain(int* arr, int arrSize) {
 
 // Main function (Empty, test cases will be appended dynamically)
 int main() {
+    
     return 0;
 }
