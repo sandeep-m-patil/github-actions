@@ -8,6 +8,5 @@ int add(int a, int b) {
 int main() {
     printf("Program started...\n");
 
-    // The test cases will be appended here by GitHub Actions
     return 0;
 }
