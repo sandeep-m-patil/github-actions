@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+
 // Function to find the longest mountain
 int longestMountain(int* arr, int arrSize) {
     if (arrSize < 3) return 0;
