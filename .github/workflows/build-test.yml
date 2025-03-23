@@ -1,0 +1,37 @@
+name: Auto Append Testcases & Run C Program
+
+on:
+  push:
+    paths:
+      - 'main.c'  # Trigger only when main.c is pushed
+
+jobs:
+  append-testcase-build-run:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Append Test Cases to main.c
+      run: |
+        echo 'int main() {' > temp.c
+        cat main.c >> temp.c
+        echo '
+        // Test Cases
+        #include <stdio.h>
+        void run_tests() {
+            printf("Running tests...\\n");
+            printf("Test 1: %d\\n", add(2, 3) == 5);
+            printf("Test 2: %d\\n", add(-1, 1) == 0);
+        }
+        ' >> temp.c
+        mv temp.c main.c
+
+    - name: Compile the Program
+      run: |
+        gcc main.c -o main
+
+    - name: Run and Test
+      run: |
+        ./main
