@@ -15,22 +15,24 @@ jobs:
 
     - name: Append Test Cases to main.c
       run: |
-        echo 'int main() {' > temp.c
+        echo '#include <stdio.h>' > temp.c
+        echo 'int add(int a, int b) { return a + b; }' >> temp.c
         cat main.c >> temp.c
         echo '
         // Test Cases
-        #include <stdio.h>
         void run_tests() {
             printf("Running tests...\\n");
             printf("Test 1: %d\\n", add(2, 3) == 5);
             printf("Test 2: %d\\n", add(-1, 1) == 0);
         }
+
+        int main() {
+            printf("Program started...\\n");
+            run_tests();
+            return 0;
+        }
         ' >> temp.c
         mv temp.c main.c
-
-    - name: Compile the Program
-      run: |
-        gcc main.c -o main
 
     - name: Run and Test
       run: |
