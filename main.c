@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+
 int longestMountain(int* arr, int size) {
     if (size < 3) return 0;
     
@@ -20,3 +21,4 @@ int longestMountain(int* arr, int size) {
 }
 
 // No main() here; GitHub Actions will append it dynamically.
+

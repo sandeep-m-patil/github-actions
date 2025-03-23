@@ -22,11 +22,20 @@ jobs:
           echo '    int arr3[] = {0, 2, 0, 2, 1, 2, 3, 4, 5, 2, 1, 0};' >> main.c
           echo '    int arr4[] = {2, 3, 4, 5, 6, 7};' >> main.c
           echo '    int arr5[] = {1, 2, 3, 4, 3, 2, 1, 0};' >> main.c
-          echo '    printf("Test 1: Expected 5, Got %d\\n", longestMountain(arr1, 7));' >> main.c
-          echo '    printf("Test 2: Expected 0, Got %d\\n", longestMountain(arr2, 3));' >> main.c
-          echo '    printf("Test 3: Expected 5, Got %d\\n", longestMountain(arr3, 12));' >> main.c
-          echo '    printf("Test 4: Expected 0, Got %d\\n", longestMountain(arr4, 6));' >> main.c
-          echo '    printf("Test 5: Expected 8, Got %d\\n", longestMountain(arr5, 8));' >> main.c
+          echo '    int expected[] = {5, 0, 5, 0, 8};' >> main.c
+          echo '    int results[5];' >> main.c
+          echo '    int passed = 0, failed = 0;' >> main.c
+          echo '    results[0] = longestMountain(arr1, 7);' >> main.c
+          echo '    results[1] = longestMountain(arr2, 3);' >> main.c
+          echo '    results[2] = longestMountain(arr3, 12);' >> main.c
+          echo '    results[3] = longestMountain(arr4, 6);' >> main.c
+          echo '    results[4] = longestMountain(arr5, 8);' >> main.c
+          echo '    for (int i = 0; i < 5; i++) {' >> main.c
+          echo '        int success = (expected[i] == results[i]);' >> main.c
+          echo '        printf("Test %d: Expected %d, Got %d --> %s\\n", i + 1, expected[i], results[i], success ? "✅ PASS" : "❌ FAIL");' >> main.c
+          echo '        if (success) passed++; else failed++;' >> main.c
+          echo '    }' >> main.c
+          echo '    printf("\\nSummary: %d/%d tests passed, %d failed.\\n", passed, 5, failed);' >> main.c
           echo '}' >> main.c
           echo '' >> main.c
           echo 'int main() {' >> main.c
