@@ -21,4 +21,4 @@ int longestMountain(int* arr, int size) {
 }
 
 // No main() here; GitHub Actions will append it dynamically.
-
+// to ensure main() is not defined multiple times.
