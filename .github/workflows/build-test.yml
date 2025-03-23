@@ -16,35 +16,41 @@ jobs:
 
       - name: Modify main.c to Include Test Cases
         run: |
+          # Backup original main.c
+          cp main.c original_main.c
+
           # Extract everything before `main()`
           awk '/int main\(\)/ {exit} {print}' main.c > temp_main.c
 
-          # Insert test case function
+          # Insert test case function before main()
           echo '' >> temp_main.c
           echo 'void runTestCases() {' >> temp_main.c
           echo '    int arr1[] = {2, 1, 4, 7, 3, 2, 5};' >> temp_main.c
           echo '    printf("Test 1: Expected 5, Got %d\\n", longestMountain(arr1, 7));' >> temp_main.c
-
+          echo '' >> temp_main.c
           echo '    int arr2[] = {1, 3, 5, 3, 4, 2, 0, 8, 10, 7, 6, 5, 4, 3, 1};' >> temp_main.c
           echo '    printf("Test 2: Expected 9, Got %d\\n", longestMountain(arr2, 15));' >> temp_main.c
-
+          echo '' >> temp_main.c
           echo '    int arr3[] = {2, 1, 3, 2, 1, 5, 6, 5, 2, 1};' >> temp_main.c
           echo '    printf("Test 3: Expected 6, Got %d\\n", longestMountain(arr3, 10));' >> temp_main.c
-
+          echo '' >> temp_main.c
           echo '    int arr4[] = {2, 2, 2};' >> temp_main.c
           echo '    printf("Test 4: Expected 0, Got %d\\n", longestMountain(arr4, 3));' >> temp_main.c
-
-          echo '    int arr5[] = {1, 2, 3, 2, 1};' >> temp_main.c
-          echo '    printf("Test 5: Expected 5, Got %d\\n", longestMountain(arr5, 5));' >> temp_main.c
+          echo '' >> temp_main.c
+          echo '    int arr5[] = {0, 1, 0};' >> temp_main.c
+          echo '    printf("Test 5: Expected 3, Got %d\\n", longestMountain(arr5, 3));' >> temp_main.c
           echo '}' >> temp_main.c
+          echo '' >> temp_main.c
 
-          # Extract the existing `main()` function without its last `}`
+          # Extract main() body (excluding last `}`)
           awk '/int main\(\)/ {flag=1; next} flag {if ($0 != "}") print}' main.c >> temp_main.c
 
           # Add test case execution inside main()
           echo '    runTestCases();' >> temp_main.c
+          echo '    return 0;' >> temp_main.c  # Ensure proper return statement
           echo '}' >> temp_main.c  # Closing bracket for main()
 
+          # Replace main.c with modified version
           mv temp_main.c main.c
           cat main.c  # Debug: Show final main.c
 
@@ -55,5 +61,5 @@ jobs:
 
       - name: Run and Test
         run: |
-          chmod +x main  # Ensure executable permissions
+          chmod +x main
           ./main
