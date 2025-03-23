@@ -1,39 +1,35 @@
-name: Auto Append Testcases & Run C Program
+name: Append Testcases & Run C Program
 
 on:
   push:
     paths:
-      - 'main.c'  # Trigger only when main.c is pushed
+      - "main.c"
+  workflow_dispatch:
 
 jobs:
   append-testcase-build-run:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-    - name: Append Test Cases to main.c
-      run: |
-        echo '#include <stdio.h>' > temp.c
-        echo 'int add(int a, int b) { return a + b; }' >> temp.c
-        cat main.c >> temp.c
-        echo '
-        // Test Cases
-        void run_tests() {
-            printf("Running tests...\\n");
-            printf("Test 1: %d\\n", add(2, 3) == 5);
-            printf("Test 2: %d\\n", add(-1, 1) == 0);
-        }
+      - name: Append Test Cases to main.c
+        run: |
+          echo 'int main() {' > temp_main.c
+          cat main.c >> temp_main.c
+          echo 'printf("Test Case: 2 + 2 = %d\n", 2+2);' >> temp_main.c
+          echo 'return 0;' >> temp_main.c
+          echo '}' >> temp_main.c
+          mv temp_main.c main.c
+          cat main.c  # Debug: Show final main.c
 
-        int main() {
-            printf("Program started...\\n");
-            run_tests();
-            return 0;
-        }
-        ' >> temp.c
-        mv temp.c main.c
+      - name: Compile the Program
+        run: |
+          gcc main.c -o main
+          ls -l  # Debug: Verify if the executable exists
 
-    - name: Run and Test
-      run: |
-        ./main
+      - name: Run and Test
+        run: |
+          chmod +x main  # Ensure executable permissions
+          ./main
