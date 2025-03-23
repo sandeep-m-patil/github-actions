@@ -7,6 +7,5 @@ int add(int a, int b) {
 
 int main() {
     printf("Program started...\n");
-
     return 0;
 }
